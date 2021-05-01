@@ -1,0 +1,55 @@
+{
+  "name": "vaccination-alerts-rest-api",
+  "version": "0.0.0",
+  "description": "This is the rest api written in fastify",
+  "main": "build/index.js",
+  "scripts": {
+    "dev:mongosetup": "docker run --name vaccine-alerts-mongo-development -p 7000:27017 -v $PWD/mongo-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -e MONGO_INITDB_DATABASE=schedule -d mongo",
+    "dev:startmongo": "docker start vaccine-alerts-mongo-development",
+    "dev:stopmongo": "docker stop vaccine-alerts-mongo-development",
+    "dev:removemongo": "docker rm vaccine-alerts-mongo-development",
+    "dev:mongobash": "docker exec -it vaccine-alerts-mongo-development bash",
+    "dev:dump": "docker exec vaccine-alerts-mongo-development sh -c 'exec mongodump -d schedule --archive' > ./dumps/devmongo.archive",
+    "predev": "npm run dev:startmongo",
+    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q build/index.js\"",
+    "prebuild": "rimraf build",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "cross-env NODE_ENV=production node build/index.js",
+    "test": "mocha --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rish-0-0/covid-vaccination-alerts.git"
+  },
+  "keywords": [
+    "Fastify",
+    "RESTful"
+  ],
+  "author": "Rishabh Anand",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rish-0-0/covid-vaccination-alerts/issues"
+  },
+  "homepage": "https://github.com/rish-0-0/covid-vaccination-alerts#readme",
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "chai": "^4.3.4",
+    "concurrently": "^6.0.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.25.0",
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fastify": "^3.15.1",
+    "fastify-cors": "^6.0.0",
+    "mongodb": "^3.6.6",
+    "mongoose": "^5.12.7",
+    "razorpay": "^2.0.6"
+  }
+}
