@@ -1,0 +1,51 @@
+version: '3.1'
+
+services: 
+  vaccine-alerts-db-prod:
+    image: mongo
+    container_name: vaccine-alerts-db-prod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    networks:
+      - vaccine-alerts-network
+    volumes:
+      - $PWD/prod-data:/data/db
+  
+  vaccine-alerts-scheduler:
+    build:
+      context: ./scheduler
+      dockerfile: Dockerfile.prod
+    container_name: vaccine-alerts-scheduler
+    networks:
+      - vaccine-alerts-network
+    volumes:
+      - /usr/src/app/node_modules
+      - ./scheduler:/usr/src/app/
+    depends_on:
+      - vaccine-alerts-db-prod
+    working_dir: /usr/src/app
+    restart: always
+  
+  vaccine-alerts-rest-api:
+    build:
+      context: ./rest-api
+      dockerfile: Dockerfile.prod
+    container_name: vaccine-alerts-rest-api
+    networks:
+      - vaccine-alerts-network
+    volumes:
+      - /usr/src/app/node_modules
+      - ./rest-api:/usr/src/app/
+    depends_on:
+      - vaccine-alerts-db-prod
+      - vaccine-alerts-scheduler
+    ports:
+      - "4500:4949"
+    command: npm start
+    working_dir: /usr/src/app
+    restart: always
+    
+networks:
+  vaccine-alerts-network:

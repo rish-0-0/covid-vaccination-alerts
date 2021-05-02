@@ -4,7 +4,7 @@
   "description": "This is the rest api written in fastify",
   "main": "build/index.js",
   "scripts": {
-    "dev:mongosetup": "docker run --name vaccine-alerts-mongo-development -p 7000:27017 -v $PWD/mongo-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -e MONGO_INITDB_DATABASE=schedule -d mongo",
+    "dev:mongosetup": "docker run --name vaccine-alerts-mongo-development -p 7000:27017 -p 7001:28017 -v $PWD/mongo-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -e MONGO_INITDB_DATABASE=schedule -d mongo",
     "dev:startmongo": "docker start vaccine-alerts-mongo-development",
     "dev:stopmongo": "docker stop vaccine-alerts-mongo-development",
     "dev:removemongo": "docker rm vaccine-alerts-mongo-development",
@@ -16,6 +16,8 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production node build/index.js",
+    "lint": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix",
     "test": "mocha --exit"
   },
   "repository": {
@@ -33,11 +35,19 @@
   },
   "homepage": "https://github.com/rish-0-0/covid-vaccination-alerts#readme",
   "devDependencies": {
+    "@types/mongoose": "^5.10.5",
     "@types/node": "^15.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "chai": "^4.3.4",
     "concurrently": "^6.0.2",
     "cross-env": "^7.0.3",
     "eslint": "^7.25.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
     "mocha": "^8.3.2",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
@@ -51,5 +61,10 @@
     "mongodb": "^3.6.6",
     "mongoose": "^5.12.7",
     "razorpay": "^2.0.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
