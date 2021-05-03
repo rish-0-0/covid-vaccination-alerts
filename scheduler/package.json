@@ -12,7 +12,8 @@
     "dev:dump": "docker exec vaccine-alerts-mongo-development sh -c 'exec mongodump -d schedule --archive' > ./dumps/devmongo.archive",
     "predev": "npm run dev:startmongo",
     "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q build/index.js\"",
-    "prebuild": "rimraf build",
+    "clean": "rimraf build",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production node build/index.js",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@types/mongoose": "^5.10.5",
     "@types/node": "^15.0.1",
+    "@types/nodemailer": "^6.4.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "chai": "^4.3.4",
@@ -57,9 +59,12 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
+    "firebase-admin": "^9.7.0",
     "mongodb": "^3.6.6",
-    "mongoose": "^5.12.7"
+    "mongoose": "^5.12.7",
+    "nodemailer": "^6.6.0"
   },
   "husky": {
     "hooks": {
