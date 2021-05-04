@@ -11,11 +11,12 @@ admin.initializeApp({
   credential: admin.credential.cert(firebaseAccountSecurity),
 });
 
-interface IMessagePayload {
+export interface IMessagePayload {
   token: string;
   data: {
-    centresFound: string;
-    district: string;
+    centersFound: string;
+    count: string;
+    lastRunDate: string;
   };
 }
 

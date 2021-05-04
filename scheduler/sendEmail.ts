@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import serviceAccount from "./service-account.json";
 import dayjs from "dayjs";
-import { ICentre } from "./searchCentres";
+import { ICenter } from "./searchCentres";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.google.com",
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 interface IMailBody {
   lastRunDate: Date;
-  centres: Array<ICentre>;
+  centers: Array<ICenter>;
 }
 
 export default async function sendMail(
@@ -36,7 +36,7 @@ export default async function sendMail(
       ).format("DD/MM/YYYY HH:mm:ss")}<br/>
       for the centres:<br/>
 
-      ${data.centres
+      ${data.centers
         .map(
           (e) =>
             `Name:${e.name}
@@ -48,6 +48,12 @@ export default async function sendMail(
         .join("\n\n")}
 
       </div>
+      <br/>
+      Please stay safe<br/>
+      And vaccinate<br/>
+      Safe Regards,<br/>
+      Rishabh Anand
+      <a href="https://rishabh-anand.com" target="_blank">Reference</a>
       `,
     });
     return true;
