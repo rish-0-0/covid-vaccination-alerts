@@ -11,7 +11,7 @@ dotenv.config();
   const PORT = process.env.NODE_ENV === "production" ? 4500 : 5000;
   const app = await buildApp(connectionURI);
 
-  app.listen(PORT, (err, addr) => {
+  app.listen(PORT, "0.0.0.0", (err, addr) => {
     if (err) {
       console.error("Server failed to setup\n", err);
       process.exit(1);

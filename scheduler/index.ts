@@ -23,6 +23,16 @@ async function main(): Promise<void> {
     const items = await SchedItem.find().sort({ startingDate: 1 }).limit(1);
     if (items.length) {
       const schedItem = items[0];
+      const currentTime = dayjs();
+      const scheduledTime = dayjs(schedItem.startingDate);
+      const timeDiff = scheduledTime.diff(currentTime, "m", true);
+      if (timeDiff > 5.0) {
+        console.log(
+          chalk.blue(`Time diff was way too much: ${timeDiff} minutes`)
+        );
+        // If time is greater than 5 minutes skip. Let's check a minute later
+        return;
+      }
       if (schedItem.districtId != null) {
         const centersFound = await searchCentresWithDistrict(schedItem);
         if (centersFound === null || centersFound?.length === 0) {
@@ -79,7 +89,15 @@ async function main(): Promise<void> {
 
 async function driver(): Promise<void> {
   try {
+    const beforeExecution = dayjs();
     await main();
+    const afterExecution = dayjs();
+    if (afterExecution.diff(beforeExecution, "minutes") >= 1) {
+      // If the execution has exceeded 1 minute, then don't wait.
+      // Immediately execute
+      setImmediate(driver);
+      return;
+    }
     // Schedule it for the next minute
     setTimeout(driver, SCHEDULE_TIME);
   } catch (e) {

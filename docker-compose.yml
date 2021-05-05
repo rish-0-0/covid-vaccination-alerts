@@ -26,6 +26,7 @@ services:
     depends_on:
       - vaccine-alerts-db-prod
     working_dir: /usr/src/app
+    command: npm start
     restart: always
   
   vaccine-alerts-rest-api:
@@ -42,7 +43,7 @@ services:
       - vaccine-alerts-db-prod
       - vaccine-alerts-scheduler
     ports:
-      - "4500:4949"
+      - "4500:4500"
     command: npm start
     working_dir: /usr/src/app
     restart: always
