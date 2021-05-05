@@ -4,3 +4,4 @@ build/
 .env
 mongo-data/
 ._*
+prod-data/

@@ -159,9 +159,9 @@ export async function searchCentresWithPincode(
       let isAllowed = false;
       center.sessions.forEach((session: any) => {
         if (
-          minAgeSatisfied(session, schedItem) ||
-          paidAmountSatisfied(session, schedItem) ||
-          vaccineTypeSatisfied(session, schedItem) ||
+          minAgeSatisfied(session, schedItem) &&
+          paidAmountSatisfied(session, schedItem) &&
+          vaccineTypeSatisfied(session, schedItem) &&
           numberOfSlotsGreaterThanSatisfied(session, schedItem)
         ) {
           isAllowed = true;
