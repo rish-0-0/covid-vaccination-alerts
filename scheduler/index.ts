@@ -13,7 +13,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const SCHEDULE_TIME = 60 * 1000; // 1 minute
-const SLEEP_TIME = 60 * 60 * 1000; // 1 hr
+const SLEEP_TIME = 5 * 60 * 1000; // 5 minutes
 
 async function main(): Promise<void> {
   try {
@@ -104,7 +104,7 @@ async function driver(): Promise<void> {
     console.error("Error ocurred while driving the repeat process\n", e);
     if (e instanceof RangeError) {
       // Do not throw this error which can be caught by init
-      console.log(chalk.red(`GOING TO SLEEP FOR AN HOUR!!`));
+      console.log(chalk.red(`GOING TO SLEEP FOR ${SLEEP_TIME}ms`));
       if (process.env.NODE_ENV !== "production") {
         setTimeout(driver, SCHEDULE_TIME);
         return;
