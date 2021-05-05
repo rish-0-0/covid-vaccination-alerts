@@ -21,6 +21,8 @@ services:
     networks:
       - vaccine-alerts-network
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - /usr/src/app/node_modules
       - ./scheduler:/usr/src/app/
     depends_on:
@@ -37,6 +39,8 @@ services:
     networks:
       - vaccine-alerts-network
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - /usr/src/app/node_modules
       - ./rest-api:/usr/src/app/
     depends_on:

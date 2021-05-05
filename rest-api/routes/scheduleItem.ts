@@ -36,10 +36,6 @@ const SchedItemBodySchema = {
     districtId: {
       type: "integer",
     },
-    timeOfDelivery: {
-      type: "string",
-      format: "date-time",
-    },
     repeatEvery: {
       type: "integer",
     },
@@ -50,7 +46,7 @@ const SchedItemBodySchema = {
       type: "string",
     },
   },
-  required: ["timeOfDelivery", "repeatEvery"],
+  required: ["repeatEvery"],
   oneOf: [
     {
       required: ["userSubscription"],
@@ -86,7 +82,6 @@ export default async function (
         paid: request.body.paid || false, // generally search for false
         minAge: request.body.minAge || 0, // search for a baby,
         districtId: request.body.districtId,
-        timeOfDelivery: request.body.timeOfDelivery,
         repeatEvery: request.body.repeatEvery,
         userSubscription: request.body.userSubscription,
         email: request.body.email,
