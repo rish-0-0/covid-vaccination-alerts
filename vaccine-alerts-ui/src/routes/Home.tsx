@@ -6,11 +6,7 @@ function HomePage() {
   return (
     <section className="home">
       <Form />
-      <div className="my-flexy-row flexy-center">
-        <div className="my-flexy-12-col">
-          <PaymentButton />
-        </div>
-      </div>
+      <PaymentButton />
     </section>
   );
 }
