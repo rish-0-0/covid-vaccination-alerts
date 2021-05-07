@@ -7,7 +7,7 @@ import scheduleItem from "./routes/scheduleItem";
 async function buildApp(connectionURI: string): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
   app.register(fastifyCors, {
-    origin: [/localhost/, "https://cowin-vaccination-alerts.rishabh-anand.com"],
+    origin: ["https://cowin-vaccination-alerts.rishabh-anand.com", "https://covid-vaccination-alerts.web.app"],
   });
   app.setErrorHandler(errorHandler);
   try {
