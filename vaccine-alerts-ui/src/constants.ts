@@ -4,6 +4,16 @@ export const useGlobalStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 225,
+  },
+  simpleCenter: {
+    textAlign: "center",
+  },
+  root: {
+    flexGrow: 1,
+  },
 }));
 
 function messageSW(sw: ServiceWorker, data: { type: string }) {
