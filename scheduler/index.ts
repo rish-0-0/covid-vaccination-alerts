@@ -26,7 +26,7 @@ async function main(): Promise<void> {
       const currentTime = dayjs();
       const scheduledTime = dayjs(schedItem.startingDate);
       const timeDiff = scheduledTime.diff(currentTime, "m", true);
-      if (timeDiff > 5.0) {
+      if (!(Math.abs(timeDiff) < 5.0)) {
         console.log(
           chalk.blue(`Time diff was way too much: ${timeDiff} minutes`)
         );
