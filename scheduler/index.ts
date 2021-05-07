@@ -9,6 +9,7 @@ import {
 import sendMail from "./sendEmail";
 import sendNotification, { IMessagePayload } from "./sendNotification";
 import dotenv from "dotenv";
+import { removeFromSchedule } from "./scheduler";
 
 dotenv.config();
 
@@ -30,6 +31,10 @@ async function main(): Promise<void> {
         console.log(
           chalk.blue(`Time diff was way too much: ${timeDiff} minutes`)
         );
+        if (timeDiff < 0) {
+          // Remove if an item is long due and somehow managed to escape
+          await removeFromSchedule(schedItem);
+        }
         // If time is greater than 5 minutes skip. Let's check a minute later
         return;
       }
