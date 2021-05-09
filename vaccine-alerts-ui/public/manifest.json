@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CoWIN Vaccination Alerts",
+  "name": "CoWIN Vaccination Alerts",
   "icons": [
     {
       "src": "favicon.ico",
