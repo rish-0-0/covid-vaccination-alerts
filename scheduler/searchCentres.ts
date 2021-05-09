@@ -5,6 +5,9 @@ import { removeFromSchedule, scheduleNext } from "./scheduler";
 
 const cowinAPI = axios.create({ baseURL: "https://cdn-api.co-vin.in/api" });
 
+export const MOZZ_HEADER =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36";
+
 interface ISession {
   capacity: number;
   date: string;
@@ -46,7 +49,12 @@ export async function searchCentresWithDistrict(
     const {
       data: { centers },
     } = await cowinAPI.get(
-      `/v2/appointment/sessions/public/calendarByDistrict?date=${startingFormattedDate}&district_id=${schedItem.districtId}`
+      `/v2/appointment/sessions/public/calendarByDistrict?date=${startingFormattedDate}&district_id=${schedItem.districtId}`,
+      {
+        headers: {
+          "User-Agent": MOZZ_HEADER,
+        },
+      }
     );
     if (!Array.isArray(centers)) {
       await removeFromSchedule(schedItem);
@@ -124,7 +132,8 @@ export async function searchCentresWithPincode(
       const {
         data: { centers },
       } = await cowinAPI.get(
-        `/v2/appointment/sessions/public/calendarByPin?date=${startingFormattedDate}&pincode=${pincode}`
+        `/v2/appointment/sessions/public/calendarByPin?date=${startingFormattedDate}&pincode=${pincode}`,
+        { headers: { "User-Agent": MOZZ_HEADER } }
       );
       if (!Array.isArray(centers)) continue;
       const formattedCenters: ICenter[] = centers.map((e: any) => {
