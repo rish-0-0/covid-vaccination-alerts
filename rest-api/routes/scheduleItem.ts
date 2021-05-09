@@ -3,6 +3,7 @@ import {
   RouteShorthandOptions,
 } from "fastify";
 import SchedItem, { ISchedItem } from "../models/SchedItem";
+import dayjs from "dayjs";
 
 const SchedItemBodySchema = {
   type: "object",
@@ -73,9 +74,19 @@ export default async function (
       },
     },
     async (request, reply) => {
+      const startingDateDayjs = dayjs(request.body.startingDate);
+      const currentDateDayjs = dayjs();
+      let startingDate: Date = new Date();
+      if (startingDateDayjs.format("DD-MM-YYYY") === currentDateDayjs.format("DD-MM-YYYY")) {
+        startingDate = currentDateDayjs.add(1,"h").toDate();
+      }
+      else {
+        startingDate = startingDateDayjs.toDate();
+      }
+      
       const item = await SchedItem.create({
         pincodes: request.body.pincodes || [],
-        startingDate: request.body.startingDate,
+        startingDate,
         endingDate: request.body.endingDate,
         numberOfSlotsGreaterThan: request.body.numberOfSlotsGreaterThan,
         vaccineType: request.body.vaccineType,

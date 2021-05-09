@@ -16,22 +16,7 @@ export async function removeFromSchedule(
 }
 
 export async function scheduleNext(schedItem: ISchedItem): Promise<boolean> {
-  try {
-    const startingDateDayjs = dayjs(schedItem.startingDate);
-    const endingDateDayjs = dayjs(schedItem.endingDate);
-    const diff = endingDateDayjs.diff(startingDateDayjs, "hour");
-    if (diff <= 0) {
-      await removeFromSchedule(schedItem);
-      return false;
-    }
-    if (diff < schedItem.repeatEvery) {
-      await SchedItem.create({
-        ...schedItem,
-        startingDate: endingDateDayjs.toDate(),
-      });
-      await removeFromSchedule(schedItem);
-      return true;
-    }
+  try {    
     await SchedItem.create({
       ...schedItem,
       startingDate: dayjs(schedItem.startingDate)

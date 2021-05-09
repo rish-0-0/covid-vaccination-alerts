@@ -13,8 +13,8 @@ import { removeFromSchedule } from "./scheduler";
 
 dotenv.config();
 
-const SCHEDULE_TIME = 60 * 1000; // 1 minute
-const SLEEP_TIME = 5 * 60 * 1000; // 5 minutes
+const SCHEDULE_TIME = 5 * 60 * 1000; // 5 minute
+const SLEEP_TIME = 15 * 60 * 1000; // 15 minutes
 
 async function main(): Promise<void> {
   try {
@@ -27,7 +27,7 @@ async function main(): Promise<void> {
       const currentTime = dayjs();
       const scheduledTime = dayjs(schedItem.startingDate);
       const timeDiff = scheduledTime.diff(currentTime, "m", true);
-      if (!(Math.abs(timeDiff) < 30.0)) {
+      if (!(Math.abs(timeDiff) < 45)) {
         console.log(
           chalk.blue(`Time diff was way too much: ${timeDiff} minutes`)
         );
@@ -35,7 +35,7 @@ async function main(): Promise<void> {
           // Remove if an item is long due and somehow managed to escape
           await removeFromSchedule(schedItem);
         }
-        // If time is greater than 5 minutes skip. Let's check a minute later
+        // If time is greater than 45 minutes skip. Let's check a 5 minute later
         return;
       }
       if (schedItem.districtId != null) {
