@@ -6,7 +6,10 @@ export const useGlobalStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 225,
+    minWidth: 250,
+  },
+  responsive: {
+    maxWidth: 360,
   },
   simpleCenter: {
     textAlign: "center",

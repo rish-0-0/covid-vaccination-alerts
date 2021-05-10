@@ -45,6 +45,7 @@ function Form() {
   const [loading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<string | false>();
   const [success, setSuccess] = useState<boolean>(false);
+  const [pincodes, setPincodes] = useState<string | null>(null);
   const handleSubmit = async (e: React.MouseEvent): Promise<void> => {
     try {
       setSuccess(false);
@@ -58,11 +59,17 @@ function Form() {
       if (!EMAIL_REGEX.test(email)) {
         throw new Error("Email is not valid");
       }
+      let pincodesArray: string[] = [];
+
+      if (pincodes && pincodes !== "" && /[0-9]+([,0-9]+)*/.test(pincodes)) {
+        pincodesArray = pincodes.split(",");
+      }
       const prepareData = {
         startingDate: selectedStartingDate,
         paid,
         minAge,
         email,
+        ...(Array.isArray(pincodesArray) && { pincodes: pincodesArray }),
         districtId: selectedDistrictId,
         repeatEvery,
       };
@@ -102,6 +109,7 @@ function Form() {
         setFetchedDistricts(
           districts.map((e) => ({ id: e.district_id, name: e.district_name }))
         );
+        setSelectedDistrictId(districts[0].district_id as number);
       } catch (e) {
         console.error(
           "Error on fetching public districts for given stateId\n",
@@ -300,7 +308,24 @@ function Form() {
         <Grid item xs={12}>
           <TextField
             className={classes.formControl}
+            id="input-pincodes"
+            type="text"
+            label="Pincodes (Seperated by commas)"
+            placeholder="110035, 560095"
+            value={pincodes}
+            onChange={(e) => setPincodes(e.target.value)}
+          />
+        </Grid>
+      </Grid>
+      {/* IN BETWEEN THESE TWO COMMENTS IS THE REPEATING SECTION */}
+
+      {/* GOING TO REPEAT THE BELOW SECTION OF CODE A LOT. */}
+      <Grid container>
+        <Grid item xs={12}>
+          <TextField
+            className={classes.formControl}
             id="input-email"
+            required
             type="email"
             label="Email"
             value={email}
